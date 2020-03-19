@@ -1,11 +1,13 @@
 import openpyxl, os, datetime
 
 class resourceDataBase:
-    def __init__(self):
+    def __init__(self, test=None):
         self.attributes=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
-        self.name="Resources.xlsx"
-        self.max_height=181
-        self.max_width=12
+        if(test is None):
+            self.name="Resources.xlsx"
+        else:
+            self.name="test.xlsx"
+        self.newComer=1
 
     def start(self):
         sheet=None
@@ -13,12 +15,12 @@ class resourceDataBase:
             sheet=self.createWorkbook()
         else:
             sheet=openpyxl.load_workbook(self.name)
-        return sheet #zwracamy modulowi ktory operuje na bazie
+            self.newComer=0
 
-
-    def actualize(self): #funkcja wywolywana co odstep czasu, powoduje uaktualnienie bazy danych
-        pass
-
+        return sheet 
+    
+    def isFresh(self):
+        return self.newComer
 
     def createWorkbook(self):
         sheet=openpyxl.Workbook()
@@ -35,5 +37,76 @@ class resourceDataBase:
         sheet.save(self.name)
         return sheet
 
+
+def unitTest():
+
+    db=resourceDataBase(test=1)
+    mistakes=0
+    
+    if(db.attributes!=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]):
+        mistakes+=1
+    if(db.newComer!=1):
+        mistakes+=1
+    if(db.isFresh()!=1):
+        mistakes+=1
+    if(db.name!="test.xlsx"):
+        mistakes+=1
+
+    if(os.path.exists("test.xlsx")):
+        os.remove("test.xlsx")
+    
+    db.start()
+    if(not(os.path.exists("test.xlsx"))):
+        mistakes+=1
+    wb=db.start()
+    sheet=wb.active
+    
+    for i in range(len(db.attributes)):
+        if(sheet.cell(row=1, column=i+1).value!=db.attributes[i]):
+            mistakes+=1
+    
+    for i in range(len(db.attributes)):
+        sheet.cell(row=2, column=i+1).value=i
+
+    wb.save(db.name)
+    db=''
+    db=resourceDataBase(test=1)
+    
+    if(db.attributes!=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]):
+        mistakes+=1
+    db.start()
+    if(db.newComer!=0):
+        mistakes+=1
+    if(db.isFresh()!=0):
+        mistakes+=1
+
+    if(db.name!="test.xlsx"):
+        mistakes+=1
+
+    wb=db.start()
+    sheet=wb.active
+
+    for i in range(len(db.attributes)):
+        if(sheet.cell(row=2, column=i+1).value!=i):
+            mistakes+=1
+    
+
+    if mistakes==0:
+        print("unit test fo resourceDB has been passed")
+        return 1
+    else:
+        print("unit test fo resourceDB has been failed")
+        print(mistakes)
+        return 0
+
+
+
+    
+    
+    
+#unitTest()
+
+'''
 o=resourceDataBase()
 o.start()
+'''
