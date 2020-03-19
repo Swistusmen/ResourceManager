@@ -1,12 +1,20 @@
 import openpyxl, os, datetime
 
 class resourceDataBase:
-    def __init__(self, test=None):
-        self.attributes=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
-        if(test is None):
-            self.name="Resources.xlsx"
+    def __init__(self, test=None, user=None):
+        if  (test is None):
+            if(user is None):
+                self.name="Resources.xlsx"
+                self.attributes=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
+            else:
+                self.name="User.xlsx"
+                self.attributes=["PLN","Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
         else:
             self.name="test.xlsx"
+            if(user is None):
+                self.attributes=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
+            else:
+                self.attributes=["PLN","Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
         self.newComer=1
 
     def start(self):
