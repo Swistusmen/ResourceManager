@@ -1,2 +1,2 @@
 # ResourceManager
-Gathering infos about currency, resources, cryptocurrencys and makes in excel, makes some calculations
+Gathering infos about currency, resources, cryptocurrencys, operates on worksheet in excel, makes some calculations
