@@ -18,6 +18,10 @@ class webScrapper:
         self.lista+=self.getCrypto()
 
         self.convertToProper()
+        self.lista[7]*=self.lista[4]
+        self.lista[8]*=self.lista[4]
+        self.lista[9]*=self.lista[4]
+        self.lista[10]*=self.lista[4]
 
         return self.lista
 
@@ -64,9 +68,7 @@ class webScrapper:
         lista.append(wartosc[2].text)
         lista.append(wartosc[7].text)
         lista.append(wartosc[12].text)
-        for i in range(3):
-            a=lista[i].split(',')
-            lista[i]=a[0]+"."+a[1]
+        
         return lista
 
     def getCrypto(self):

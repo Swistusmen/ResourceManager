@@ -24,21 +24,22 @@ class userWallet:
             current_row=sheet.max_row
 
             if sheet.cell(row=current_row, column=1).value+amount<0:
+                amount+=sheet.cell(row=current_row, column=1).value
                 sheet.cell(row=current_row, column=1).value=0
                 self.wb.save(self.base.name)
                 return amount
 
             sheet.cell(row=current_row, column=1).value+=amount
-            difference=sheet.cell(row=current_row-1, column=1).value+sheet.cell(row=current_row, column=1).value
+            
+            #difference=sheet.cell(row=current_row-1, column=1).value-sheet.cell(row=current_row, column=1).value
             self.wb.save(self.base.name)
-            return difference
+            return 0
         else:
             for i in range(len(self.base.attributes)):
                 sheet.cell(column=i+1,row=2).value=0
             sheet.cell(column=1, row=2).value=amount
             self.wb.save(self.base.name)
             return amount
-
 
     def makeNewLine(self):
         sheet=self.wb.active
@@ -85,13 +86,16 @@ class userWallet:
         current_row=sheet.max_row
         value=sheet.cell(row=current_row, column=whichOne+1).value+amount
         if(value>0):
+           
             sheet.cell(row=current_row, column=whichOne+1).value=value
+            
             self.wb.save(self.base.name)
             return 0 
         else:
-            sheet.cell(row=current_row, column=whichOne).value=0
+           
+            sheet.cell(row=current_row, column=whichOne+1).value=0
             self.wb.save(self.base.name)
-            return value
+            return value #zwracamy ile produktu nie udalo nam sie wymienic
 
 
 
@@ -214,7 +218,7 @@ def unitTest():
         return 0
 
 
-unitTest()
+#unitTest()
     
 
 

@@ -4,7 +4,7 @@ def retTheDiffrence(list1 , list2):
         raise Exception ("The sizes of lists are not the same!")
     lista=[]
     for i in range(len(list1)):
-        lista.append(list1[i]-list2[i])
+        lista.append(float(list1[i])-float(list2[i]))
     return lista
 
 
@@ -18,6 +18,18 @@ def retThePercentage(list1, list2):
 
 def getValueInPLN(dolarCourse, comoddityInDollars):
     return dolarCourse*comoddityInDollars
+
+def getRealValues(lista1, lista2):
+    if(len(lista1)!=len(lista2)):
+        raise Exception("The sizes of lists are not the same")
+    lista3=[]
+    for i in range(len(lista1)):
+        try:
+            lista3.append(float(lista1[i])*float(lista2[i]))
+        except Exception as err:
+            raise Exception("Something is wrong with types in calc")
+    return lista3
+        
 
 
 def unitTest():
