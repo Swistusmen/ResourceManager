@@ -79,6 +79,7 @@ class userWallet:
             if(attribute==self.base.attributes[i]):
                 whichOne=i
                 break
+
         if (whichOne==0):
             raise Exception ("Wrong attribute")
 
@@ -203,11 +204,12 @@ def unitTest():
         if(db.wb.active.cell(row=db.wb.active.max_row,column=i+1).value!=0):
             mistakes+=1
     
-    
+     
     db.SellAndBuy(amount=100, attribute="Litecoin")
     db.wb.save(db.base.name)
-    if(db.wb.active.cell(row=db.wb.active.max_row, column=db.wb.active.max_column).value!=117):
+    if(db.wb.active.cell(row=db.wb.active.max_row, column=db.wb.active.max_column).value!=100):
         mistakes+=1
+    
 
 
     if(mistakes==0):
@@ -215,10 +217,11 @@ def unitTest():
         return 1
     else:
         print("unit test for userDB has been failed")
+        print(mistakes)
         return 0
 
 
-#unitTest()
+unitTest()
     
 
 

@@ -17,16 +17,29 @@ class webScrapper:
         self.lista+=self.getCurrency()
         self.lista+=self.getCrypto()
 
+        self.uniteBTC()
+
         self.convertToProper()
-        self.lista[7]*=self.lista[4]
-        self.lista[8]*=self.lista[4]
-        self.lista[9]*=self.lista[4]
-        self.lista[10]*=self.lista[4]
+        self.lista[7]*=self.lista[4]/100
+        self.lista[8]*=self.lista[4]/100
+        self.lista[9]*=self.lista[4]/100
+        self.lista[10]*=self.lista[4]/100
 
         return self.lista
 
     def getHistoricalData(self):
         pass
+
+    def uniteBTC(self):
+        sum=""
+        for i in self.lista[7]:
+            if i==',':
+                pass
+            else:
+                sum+=i
+        self.lista[7]=sum
+
+
 
     def getResources(self):
         req=requests.get(self.resources)
@@ -165,7 +178,8 @@ def unitTest():
         print("mistakes: "+str(mistakes))
         return 0
 
-#unitTest()
+
+unitTest()
 
 
 
