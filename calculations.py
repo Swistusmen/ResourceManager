@@ -1,3 +1,5 @@
+import os
+
 
 def retTheDiffrence(list1 , list2):
     if(len(list1)!=len(list2)):
@@ -29,6 +31,22 @@ def getRealValues(lista1, lista2):
         except Exception as err:
             raise Exception("Something is wrong with types in calc")
     return lista3
+
+def sum(lista):
+    if type(lista)!=list:
+        raise Exception("Wronge type of data")
+    if(len(lista)==0):
+        print("There is no data in list to sum")
+        return 0
+    sum=0
+    for i in lista:
+        try:
+            sum+=i
+        except Exception as err:
+            print("Wrong type inside list")
+            os.sys("exit")
+    return sum
+            
         
 
 
