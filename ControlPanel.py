@@ -10,15 +10,15 @@ class ControlPanel:
         self.exchangeRates=self.getCurrentValues()
         self.money=self.MoneyInWallet()
 
-    def getCurrentValues(self):
+    def getCurrentValues(self): #get current exchange rates from the wallet
         lista=self.resources.getCurrentData()
         return lista
 
-    def getAmountsFromWallet(self):
+    def getAmountsFromWallet(self): #get current amounts of resources from wallet
         lista=self.wallet.CurrentRow()
         return lista
 
-    def getPercentageDiff(self, measurement=1):
+    def getPercentageDiff(self, measurement=1): #get percentage diffrence between this and past measurement
         if self.resources.wb.active.max_row-1>measurement:
             number=self.resources.wb.active.max_row-measurement
             return calculations.retThePercentage(self.exchangeRates,self.resources.getPointedData(number))
@@ -26,7 +26,7 @@ class ControlPanel:
             lista=[0,0,0,0,0,0,0,0,0,0,0]
             return lista
 
-    def getDiff(self, measurement=1):
+    def getDiff(self, measurement=1): #get diffrence between current exchange rates and exchanges from the past measuement
         if self.resources.wb.active.max_row-1>measurement:
             number=int(self.resources.wb.active.max_row-measurement)
             return calculations.retTheDiffrence(self.exchangeRates,self.resources.getPointedData(number))
@@ -35,7 +35,7 @@ class ControlPanel:
             return lista
 
 
-    def MoneyInWallet(self):
+    def MoneyInWallet(self): #used to get current value of stored resources
         lista1=self.getCurrentValues()
         lista2=self.getAmountsFromWallet()
         buf=lista2[0]
@@ -44,7 +44,7 @@ class ControlPanel:
         lista3+=calculations.getRealValues(lista1,lista2)
         return lista3
 
-    def PayIn(self, amount):
+    def PayIn(self, amount): #used to add money to PLN field in user wallet
         if((type(amount)!=int)and(type(amount)!=float)):
             raise Exception ("Wrong data type")
         if(amount<=0):
@@ -52,7 +52,7 @@ class ControlPanel:
         self.wallet.PayInOut(amount)
         self.actualize()
         
-    def PauOut(self, amount):
+    def PauOut(self, amount): #used to pay out money from wallet- sub money from pln field
         if((type(amount)!=int)and(type(amount)!=float)):
             raise Exception ("Wrong data type")
         if(amount>=0):
@@ -60,7 +60,7 @@ class ControlPanel:
         self.wallet.PayInOut(amount)
         self.actualize()
 
-    def BuyResource(self, resource, forPLN):
+    def BuyResource(self, resource, forPLN): #used to buy resource
         if (not (resource in ["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"])):
             raise Exception ("Wrong resource")
         if((type(forPLN)!=int)and(type(forPLN)!=float)):
@@ -83,7 +83,7 @@ class ControlPanel:
         self.actualize()
         return eq
 
-    def SellResource(self,resource, forPLN):
+    def SellResource(self,resource, forPLN): #use to sell resource
         if (not (resource in ["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"])):
             raise Exception ("Wrong resource")
         if((type(forPLN)!=int)and(type(forPLN)!=float)):
@@ -111,12 +111,12 @@ class ControlPanel:
         self.actualize()
         return eq
 
-    def actualize(self):
+    def actualize(self): #actualize data- used in another module, to auto actualize code
         self.resourcesAmount=self.getAmountsFromWallet()
         self.exchangeRates=self.getCurrentValues()
         self.money=self.MoneyInWallet()
 
-    def menu(self):
+    def menu(self): #prints option to choose in interface function
         lista=["0.payIn","1.payOut","2.Buy","3.Sell","4.show last measeure perc. changes",
         "5.show last measeure diff changes","6.show day perc. changes","7.show day diff. changes",
         "8.show week perc. changes","9.show week diff. changes",
@@ -135,7 +135,7 @@ class ControlPanel:
                 break
         return var
 
-    def interface(self, test=None, param1=None, param2=None):
+    def interface(self, test=None, param1=None, param2=None): #text interface if u want to use code from console
         if test is None:
             size=self.menu()
         a=0
@@ -235,7 +235,12 @@ class ControlPanel:
             if (test is None):
                 break
 
-
+    def GetMoney(self): #returns value of wallet
+        myList=self.MoneyInWallet()
+        cash=float(0)
+        for i in myList:
+            cash+=i
+        return cash
 
 def unitTest():
     path="TestCopies"
@@ -317,4 +322,4 @@ def unitTest():
         print(mistakes)
         return 0
     
-unitTest()
+#unitTest()

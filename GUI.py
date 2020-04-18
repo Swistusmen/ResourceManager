@@ -1,5 +1,7 @@
 from tkinter import *
+import ControlPanel
 
+manage=ControlPanel.ControlPanel()
 
 root=Tk()
 root.wm_minsize(width=600, height=500)
@@ -42,18 +44,42 @@ MenuVariable.set("")
 
 
 def PayInEntryProcedure():
+    amount=float(PayInEntry.get())
+    manage.PayIn(amount)
     print(PayInEntry.get())
     PayInEntry.set("")
 
 def PayOutEntryProcedure():
+    amount=float(PayOutEntry.get())
+    manage.PauOut(-amount)
     print(PayOutEntry.get())
     PayOutEntry.set("")
 
 def SellBuyResourceProcedure():
+    '''
+    print(MenuVariable.get())
+    MenuVariable.set("")
     print(SellBuyResource.get())
     SellBuyResource.set("")
     print(RadioVariable.get())
-    #RadioVariable.set(0)
+    '''
+
+    amount=float(SellBuyResource.get())
+    if(RadioVariable.get()==0):
+        print("Error, no option has been choosed")
+        return
+    elif RadioVariable.get()==1: #buy
+        manage.BuyResource(MenuVariable.get(),amount)
+    else: #sell
+        manage.SellResource(MenuVariable.get(),-amount)
+
+    MenuVariable.set("")
+    SellBuyResource.set("")
+    RadioVariable.set("0")
+
+
+
+    
 
 def SetRadioVariable( var):
     RadioVariable=var
@@ -107,7 +133,7 @@ class AmountOfMoney(Frame):
         Frame.__init__(self)
 
         self.variable=StringVar()
-        self.variable="siemka co tam"
+        self.variable=str(manage.GetMoney())
         self.Screen=Label(root,text=self.variable)
 
         self.Screen.grid(column=0, row=7, rowspan=2, columnspan=2, sticky=NSEW)
@@ -167,14 +193,17 @@ def GetMenuVar():
 class Operations(Frame):
     def __init__(self, lista):
         Frame.__init__(self)
+
+        lista=["Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
         
         self.choice=Menubutton(root, text="Choose Resource")
         self.choice.menu=Menu(self.choice)
         self.choice["menu"]=self.choice.menu
         
-        self.choice.menu.add_radiobutton(label="a", command=lambda:(MenuVariable.set('a')))
-        self.choice.menu.add_radiobutton(label="b", command=lambda:(MenuVariable.set("b")))
-
+        for i in lista:
+            #self.choice.menu.add_radiobutton(label=i, command=lambda:(SetMenuVar(i)))
+            self.choice.menu.add_radiobutton(label=i, variable=MenuVariable)
+        
 
         self.choice.grid(column=1, row=11)
 
@@ -183,7 +212,6 @@ class Operations(Frame):
 class ChooseOperation(Frame):
     def __init__(self):
         Frame.__init__(self)
-
         self.optionBuy=Radiobutton(root, text="Buy", variable=RadioVariable, value=1)
         self.optionSell=Radiobutton(root,text="Sell", variable=RadioVariable, value=2)
         self.variable=StringVar()
@@ -196,21 +224,20 @@ class ChooseOperation(Frame):
         self.Accept.grid(column=3, row=12)
 
 
-
-
-
-
-
 lista=list()
 var=97
 for i in range(12):
     lista.append(chr(var))
     var+=1
+lista=["PLN","Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
 label1=Label(root,text="-----Resources-----").grid(row=0, column=0, columnspan=12, sticky=W+E)
 o1=ResourceNameBar(lista)
-o2=ResourceCourseBar(lista)
-o3=ResourceAmountBar(lista)
-o4=ValueOfRecourseInWalletBar(lista)
+lista1=manage.getAmountsFromWallet()
+o2=ResourceCourseBar(lista1)
+lista2=manage.getCurrentValues()
+o3=ResourceAmountBar(lista2)
+lista3=manage.MoneyInWallet()
+o4=ValueOfRecourseInWalletBar(lista3)
 label2=Label(root,text="-----Operations-----").grid(row=6, column=0, columnspan=12, sticky=W+E)
 o5=AmountOfMoney()
 o6=PayInArea()
@@ -218,7 +245,14 @@ o7=PayOutArea()
 o9=Operations(lista)
 o10=ChooseOperation()
 
-
-
 root.mainloop()
 
+
+#TODO autoactualization of data when somethings change
+#TODO add descriptions what is what
+#TODO add widget presenting current resource, value of this resource in PLN
+#TODO better presentation
+
+
+
+#TODO options with comparasing several measurements
