@@ -18,6 +18,8 @@ root.columnconfigure(8,pad=2)
 root.columnconfigure(9,pad=2)
 root.columnconfigure(10, pad=2)
 root.columnconfigure(11,pad=2)
+root.columnconfigure(12,pad=2)
+root.columnconfigure(13,pad=2)
 
 root.rowconfigure(0,pad=2)
 root.rowconfigure(1,pad=2)
@@ -39,31 +41,29 @@ RadioVariable.set(0)
 MenuVariable=StringVar()
 MenuVariable.set("")
 
+lista1=manage.getAmountsFromWallet()
+lista2=manage.getCurrentValues()
+lista3=manage.MoneyInWallet()
+TotalMoney=StringVar()
+TotalMoney=str(manage.GetMoney())
 
-
+def ActualizeData():
+    lista1=manage.getAmountsFromWallet()
+    lista2=manage.getCurrentValues()
+    lista3=manage.MoneyInWallet()
 
 
 def PayInEntryProcedure():
     amount=float(PayInEntry.get())
     manage.PayIn(amount)
-    print(PayInEntry.get())
-    PayInEntry.set("")
+    fun()
 
 def PayOutEntryProcedure():
     amount=float(PayOutEntry.get())
     manage.PauOut(-amount)
-    print(PayOutEntry.get())
-    PayOutEntry.set("")
+    fun()
 
 def SellBuyResourceProcedure():
-    '''
-    print(MenuVariable.get())
-    MenuVariable.set("")
-    print(SellBuyResource.get())
-    SellBuyResource.set("")
-    print(RadioVariable.get())
-    '''
-
     amount=float(SellBuyResource.get())
     if(RadioVariable.get()==0):
         print("Error, no option has been choosed")
@@ -72,14 +72,12 @@ def SellBuyResourceProcedure():
         manage.BuyResource(MenuVariable.get(),amount)
     else: #sell
         manage.SellResource(MenuVariable.get(),-amount)
+    ActualizeData()
 
     MenuVariable.set("")
     SellBuyResource.set("")
     RadioVariable.set("0")
-
-
-
-    
+    fun()
 
 def SetRadioVariable( var):
     RadioVariable=var
@@ -87,58 +85,83 @@ def SetRadioVariable( var):
 class ResourceNameBar(Frame):
     def __init__(self, lista):
         Frame.__init__(self)
-
         self.names=[]
         for i in range(len(lista)):
             self.names.append(Label(root,text=lista[i]))
+
+        self.label=Label(text="Resource").grid(column=0, row=1)
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=1)
+            self.names[i].grid(column=i+1, row=1)
 
 class ResourceCourseBar(Frame):
-    def __init__(self, lista):
+    def __init__(self):
         Frame.__init__(self)
 
+
         self.names=[]
-        for i in range(len(lista)):
-            self.names.append(Label(root,text=lista[i]))
+        self.names.append(Label(root,text="None"))
+        for i in range(len(lista2)):
+            self.names.append(Label(root,text=lista2[i]))
+        self.label=Label(text="Course ").grid(column=0, row=2)
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=2)
+            self.names[i].grid(column=i+1, row=2)
+    
+
+    def actualize(self):
+        lista2=manage.getCurrentValues()
+        for i in range(len(lista2)):
+            self.names[i+1].configure(text=lista2[i])
+            
 
 class ResourceAmountBar(Frame):
-    def __init__(self, lista):
+    def __init__(self):
         Frame.__init__(self)
 
         self.names=[]
-        for i in range(len(lista)):
-            self.names.append(Label(root,text=lista[i]))
-        
+        for i in range(len(lista1)):
+            self.names.append(Label(root,text=lista1[i]))
+        self.label=Label(text="Amount").grid(column=0,row=3)
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=3)
+            self.names[i].grid(column=i+1, row=3)
+
+    def actualize(self):
+        lista1=manage.getAmountsFromWallet()
+        for i in range (len(lista1)):
+            self.names[i].configure(text=lista1[i])
 
 class ValueOfRecourseInWalletBar(Frame):
-    def __init__(self, lista):
+    def __init__(self):
         Frame.__init__(self)
 
         self.names=[]
-        for i in range(len(lista)):
-            self.names.append(Label(root,text=lista[i]))
-        
+        for i in range(len(lista3)):
+            self.names.append(Label(root,text=lista3[i]))
+        self.label=Label(text="Value in wallet").grid(column=0,row=4)
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=4)
+            self.names[i].grid(column=i+1, row=4)
+        
+    def actualize(self):
+        lista3=manage.MoneyInWallet()
+        for i in range(len(lista3)):
+            self.names[i].configure(text=lista3[i])
 
 class AmountOfMoney(Frame):
     def __init__(self):
         Frame.__init__(self)
 
-        self.variable=StringVar()
-        self.variable=str(manage.GetMoney())
-        self.Screen=Label(root,text=self.variable)
+       
+        self.Screen=Label(root,text=TotalMoney)
+        self.label=Label(text="Total money").grid(column=0, row=7, columnspan=2, sticky=NSEW)
+        self.Screen.grid(column=0, row=8, columnspan=2, sticky=NSEW)
 
-        self.Screen.grid(column=0, row=7, rowspan=2, columnspan=2, sticky=NSEW)
+    def actualize(self):
+        TotalMoney=(str(manage.GetMoney()))
+        self.Screen.configure(text=TotalMoney)
+        
 
-class PayInArea(Frame):
+class PayInArea(Frame):        
     def __init__(self):
         Frame.__init__(self)
         self.variable=StringVar(root)
@@ -199,6 +222,8 @@ class Operations(Frame):
         self.choice=Menubutton(root, text="Choose Resource")
         self.choice.menu=Menu(self.choice)
         self.choice["menu"]=self.choice.menu
+
+        self.zmienna=MenuVariable.get()
         
         for i in lista:
             #self.choice.menu.add_radiobutton(label=i, command=lambda:(SetMenuVar(i)))
@@ -206,6 +231,8 @@ class Operations(Frame):
         
 
         self.choice.grid(column=1, row=11)
+
+
 
 
 
@@ -232,12 +259,9 @@ for i in range(12):
 lista=["PLN","Oil","Gold","Copper","Silver","USD","EUR","CHF","Bitcoin","Etherum","Lisk","Litecoin"]
 label1=Label(root,text="-----Resources-----").grid(row=0, column=0, columnspan=12, sticky=W+E)
 o1=ResourceNameBar(lista)
-lista1=manage.getAmountsFromWallet()
-o2=ResourceCourseBar(lista1)
-lista2=manage.getCurrentValues()
-o3=ResourceAmountBar(lista2)
-lista3=manage.MoneyInWallet()
-o4=ValueOfRecourseInWalletBar(lista3)
+o2=ResourceCourseBar()
+o3=ResourceAmountBar()
+o4=ValueOfRecourseInWalletBar()
 label2=Label(root,text="-----Operations-----").grid(row=6, column=0, columnspan=12, sticky=W+E)
 o5=AmountOfMoney()
 o6=PayInArea()
@@ -245,14 +269,25 @@ o7=PayOutArea()
 o9=Operations(lista)
 o10=ChooseOperation()
 
+def fun():
+    lista1=manage.getAmountsFromWallet()
+    lista2=manage.getCurrentValues()
+    lista3=manage.MoneyInWallet()
+    o2.actualize()
+    o3.actualize()
+    o4.actualize()
+    o5.actualize()
+
+
+
+o11=Button(root,command=fun).grid(column=0,row=13)
+
 root.mainloop()
 
 
 #TODO autoactualization of data when somethings change
-#TODO add descriptions what is what
-#TODO add widget presenting current resource, value of this resource in PLN
+#TODO add descriptions what is what //DONE
+#TODO add widget presenting current resource, value of this resource in PLN //DONE-NEED TO MAKE ACTUALIZATION
 #TODO better presentation
-
-
 
 #TODO options with comparasing several measurements
