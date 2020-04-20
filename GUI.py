@@ -31,6 +31,13 @@ root.rowconfigure(6,pad=2)
 root.rowconfigure(7,pad=2)
 root.rowconfigure(8,pad=2)
 root.rowconfigure(9,pad=2)
+root.rowconfigure(10,pad=2)
+root.rowconfigure(11,pad=2)
+root.rowconfigure(12,pad=2)
+root.rowconfigure(13,pad=2)
+root.rowconfigure(14,pad=2)
+root.rowconfigure(15,pad=2)
+root.rowconfigure(16,pad=2)
 
 
 PayInEntry=StringVar()
@@ -89,10 +96,10 @@ class ResourceNameBar(Frame):
         for i in range(len(lista)):
             self.names.append(Label(root,text=lista[i]))
 
-        self.label=Label(text="Resource").grid(column=0, row=1)
+        self.label=Label(text="Resource").grid(column=0, row=2)
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i+1, row=1)
+            self.names[i].grid(column=i+1, row=2)
 
 class ResourceCourseBar(Frame):
     def __init__(self):
@@ -103,10 +110,10 @@ class ResourceCourseBar(Frame):
         self.names.append(Label(root,text="None"))
         for i in range(len(lista2)):
             self.names.append(Label(root,text=lista2[i]))
-        self.label=Label(text="Course ").grid(column=0, row=2)
+        self.label=Label(text="Course ").grid(column=0, row=3)
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i+1, row=2)
+            self.names[i].grid(column=i+1, row=3)
     
 
     def actualize(self):
@@ -122,9 +129,9 @@ class ResourceAmountBar(Frame):
         self.names=[]
         for i in range(len(lista1)):
             self.names.append(Label(root,text=lista1[i]))
-        self.label=Label(text="Amount").grid(column=0,row=3)
+        self.label=Label(text="Amount").grid(column=0,row=4)
         for i in range(len(self.names)):
-            self.names[i].grid(column=i+1, row=3)
+            self.names[i].grid(column=i+1, row=4)
 
     def actualize(self):
         lista1=manage.getAmountsFromWallet()
@@ -138,9 +145,9 @@ class ValueOfRecourseInWalletBar(Frame):
         self.names=[]
         for i in range(len(lista3)):
             self.names.append(Label(root,text=lista3[i]))
-        self.label=Label(text="Value in wallet").grid(column=0,row=4)
+        self.label=Label(text="Value in wallet").grid(column=0,row=5)
         for i in range(len(self.names)):
-            self.names[i].grid(column=i+1, row=4)
+            self.names[i].grid(column=i+1, row=5)
         
     def actualize(self):
         lista3=manage.MoneyInWallet()
@@ -153,8 +160,8 @@ class AmountOfMoney(Frame):
 
        
         self.Screen=Label(root,text=TotalMoney)
-        self.label=Label(text="Total money").grid(column=0, row=7, columnspan=2, sticky=NSEW)
-        self.Screen.grid(column=0, row=8, columnspan=2, sticky=NSEW)
+        self.label=Label(text="Total money").grid(column=3, row=9, columnspan=2, sticky=NSEW)
+        self.Screen.grid(column=3, row=10, columnspan=2, sticky=NSEW)
 
     def actualize(self):
         TotalMoney=(str(manage.GetMoney()))
@@ -168,8 +175,8 @@ class PayInArea(Frame):
         self.Screen=Entry(root,textvariable=PayInEntry)
         self.accept=Button(root,text="Pay In",command=PayInEntryProcedure)
 
-        self.Screen.grid(column=2, row=7)
-        self.accept.grid(column=4, row=7, columnspan=2, sticky=EW)
+        self.Screen.grid(column=5, row=9)
+        self.accept.grid(column=7, row=9, columnspan=2, sticky=EW)
 
 class PayOutArea(Frame):
     def __init__(self):
@@ -178,8 +185,8 @@ class PayOutArea(Frame):
         self.Screen=Entry(root,textvariable=PayOutEntry)
         self.accept=Button(root,text="Pay Out", command=PayOutEntryProcedure)
 
-        self.Screen.grid(column=2, row=8)
-        self.accept.grid(column=4, row=8, columnspan=2, sticky=EW)
+        self.Screen.grid(column=5, row=10)
+        self.accept.grid(column=7, row=10, columnspan=2, sticky=EW)
 
 class ChangeDayResourceCourseBar(Frame):
     def __init__(self, lista):
@@ -190,7 +197,7 @@ class ChangeDayResourceCourseBar(Frame):
             self.names.append(Label(root,text=lista[i]))
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=9)
+            self.names[i].grid(column=i, row=11)
 
 class ChangeWeekResourceCourseBar(Frame):
     def __init__(self, lista):
@@ -201,7 +208,7 @@ class ChangeWeekResourceCourseBar(Frame):
             self.names.append(Label(root,text=lista[i]))
         
         for i in range(len(self.names)):
-            self.names[i].grid(column=i, row=10)
+            self.names[i].grid(column=i, row=12)
 
 def SetMenuVar(var):
     if MenuVariable!="":
@@ -230,7 +237,7 @@ class Operations(Frame):
             self.choice.menu.add_radiobutton(label=i, variable=MenuVariable)
         
 
-        self.choice.grid(column=1, row=11)
+        self.choice.grid(column=4, row=13)
 
 
 
@@ -245,10 +252,10 @@ class ChooseOperation(Frame):
         self.entry=Entry(root,textvariable=SellBuyResource)
         self.Accept=Button(root, text="Accept", command=SellBuyResourceProcedure)
 
-        self.optionBuy.grid(column=0, row=12)
-        self.optionSell.grid(column=1, row=12)
-        self.entry.grid(column=2, row=12)
-        self.Accept.grid(column=3, row=12)
+        self.optionBuy.grid(column=3, row=14)
+        self.optionSell.grid(column=4, row=14)
+        self.entry.grid(column=5, row=14)
+        self.Accept.grid(column=6, row=14)
 
 
 lista=list()
@@ -262,7 +269,7 @@ o1=ResourceNameBar(lista)
 o2=ResourceCourseBar()
 o3=ResourceAmountBar()
 o4=ValueOfRecourseInWalletBar()
-label2=Label(root,text="-----Operations-----").grid(row=6, column=0, columnspan=12, sticky=W+E)
+label2=Label(root,text="-----Operations-----").grid(row=7, column=0, columnspan=12, sticky=W+E)
 o5=AmountOfMoney()
 o6=PayInArea()
 o7=PayOutArea()
@@ -278,16 +285,7 @@ def fun():
     o4.actualize()
     o5.actualize()
 
-
-
-o11=Button(root,command=fun).grid(column=0,row=13)
-
 root.mainloop()
 
 
-#TODO autoactualization of data when somethings change
-#TODO add descriptions what is what //DONE
-#TODO add widget presenting current resource, value of this resource in PLN //DONE-NEED TO MAKE ACTUALIZATION
-#TODO better presentation
 
-#TODO options with comparasing several measurements

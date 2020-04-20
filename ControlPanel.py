@@ -111,7 +111,7 @@ class ControlPanel:
         self.actualize()
         return eq
 
-    def actualize(self): #actualize data- used in another module, to auto actualize code
+    def actualize(self): #actualize data after every transaction
         self.resourcesAmount=self.getAmountsFromWallet()
         self.exchangeRates=self.getCurrentValues()
         self.money=self.MoneyInWallet()
